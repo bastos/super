@@ -1,0 +1,16 @@
+[[rule]]
+name = "ISBN"
+regex = "^([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])$"
+command = "open http://www.amazon.com/s/?field-keywords=$1"
+
+[[rule]]
+name = "ISBN13"
+example = "9780674430006"
+regex = "^([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])$"
+prefix = "ISBN13:"
+command = "open http://www.amazon.com/s/?field-keywords=$1"
+
+[[rule]]
+name = "Jira"
+regex = "^SB\\-([0-9]*)$"
+command = "open https://COMPANY.atlassian.net/browse/$1"
