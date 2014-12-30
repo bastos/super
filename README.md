@@ -35,6 +35,10 @@ Running:
 
 ```super gh:bastos/super```
 
+Using pipes:
+
+```echo "gh:bastos/super" | super```
+
 ## Verify you configuration
 
 ```super --check```
