@@ -2,4 +2,4 @@
 name = "Jira"
 # Bad Regex
 regex = "^SB\\-(*[0-9])$"
-command = "open https://COMPANY.atlassian.net/browse/$1"
+command = "open https://COMPANY.atlassian.net/browse/$0"

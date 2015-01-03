@@ -56,3 +56,19 @@ func TestRunQuery(t *testing.T) {
 	laucher.t = t
 	RunQuery("SB-1234", laucher, config)
 }
+
+func TestRunQueryMatches(t *testing.T) {
+	config := ReadConfig("test.toml")
+	var laucher LauncherStub
+	laucher.expectedCommand = "open https://github.com/bastos/super"
+	laucher.t = t
+	RunQuery("gh:bastos/super", laucher, config)
+}
+
+func TestRunQueryEscape(t *testing.T) {
+	config := ReadConfig("test.toml")
+	var laucher LauncherStub
+	laucher.expectedCommand = "open https://google.com/?q=Tiago+Bastos"
+	laucher.t = t
+	RunQuery("google:Tiago Bastos", laucher, config)
+}

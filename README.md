@@ -20,13 +20,12 @@ Rule:
 [[rule]]
 name = "Jira"
 regex = "^SU\\-([0-9]*)$"
-command = "open https://COMPANY.atlassian.net/browse/$1"
+command = "open https://COMPANY.atlassian.net/browse/$0"
 
 [[rule]]
 name = "Github"
-regex = "^(.*)/(.*)$"
-prefix = "gh:"
-command = "open https://github.com/$1"
+regex = "^gh\\:(.*)\\/(.*)$"
+command = "open https://github.com/$1/$2"
 ```
 
 Running:

@@ -11,6 +11,7 @@ import (
 	"os/user"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -86,11 +87,21 @@ func RunQuery(query string, launcher CommanderLauncher, config rules) {
 		if regex.MatchString(newQuery) {
 			found = true
 
+			matches := regex.FindStringSubmatch(newQuery)
+			command := s.Command
+
 			if s.Escape {
 				newQuery = url.QueryEscape(newQuery)
 			}
 
-			command := strings.Replace(s.Command, "$1", newQuery, 1)
+			for index, match := range matches {
+				if s.Escape {
+					match = url.QueryEscape(match)
+				}
+
+				command = strings.Replace(command, "$"+strconv.Itoa(index), match, 1)
+			}
+
 			launcher.Exec(command)
 		}
 	}

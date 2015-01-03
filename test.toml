@@ -1,23 +1,28 @@
 [[rule]]
 name = "ISBN"
 regex = "^([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])$"
-command = "open http://www.amazon.com/s/?field-keywords=$1"
+command = "open http://www.amazon.com/s/?field-keywords=$0"
 
 [[rule]]
 name = "ISBN13"
 example = "9780674430006"
 regex = "^([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])$"
 prefix = "ISBN13:"
-command = "open http://www.amazon.com/s/?field-keywords=$1"
+command = "open http://www.amazon.com/s/?field-keywords=$0"
 
 [[rule]]
 name = "Google"
 regex = "^(.*)$"
 prefix = "google:"
-command = "open https://google.com/?q=$1"
+command = "open https://google.com/?q=$0"
 escape = true
 
 [[rule]]
 name = "Jira"
 regex = "^SB\\-([0-9]*)$"
-command = "open https://COMPANY.atlassian.net/browse/$1"
+command = "open https://COMPANY.atlassian.net/browse/$0"
+
+[[rule]]
+name = "Github"
+regex = "^gh\\:(.*)\\/(.*)$"
+command = "open https://github.com/$1/$2"
