@@ -29,13 +29,13 @@ type rules struct {
 	Rule []rule
 }
 
-type CommanderLauncher interface {
+type commanderLauncher interface {
 	Exec(cmd string)
 }
 
-type Launcher struct{}
+type standardLauncher struct{}
 
-func (l Launcher) Exec(cmd string) {
+func (l standardLauncher) Exec(cmd string) {
 	parts := strings.Fields(cmd)
 	head := parts[0]
 	parts = parts[1:len(parts)]
@@ -50,7 +50,7 @@ func (l Launcher) Exec(cmd string) {
 	fmt.Printf("%s", out)
 }
 
-func CheckConfiguration(config rules) (bool, error) {
+func checkConfiguration(config rules) (bool, error) {
 	for _, s := range config.Rule {
 		_, err := regexp.Compile(s.Regex)
 
@@ -62,7 +62,7 @@ func CheckConfiguration(config rules) (bool, error) {
 	return true, nil
 }
 
-func RunQuery(query string, launcher CommanderLauncher, config rules) {
+func runQuery(query string, launcher commanderLauncher, config rules) {
 	var found = false
 	for _, s := range config.Rule {
 		var newQuery = ""
@@ -111,7 +111,7 @@ func RunQuery(query string, launcher CommanderLauncher, config rules) {
 	}
 }
 
-func ReadConfig(file string) rules {
+func readConfig(file string) rules {
 	var config rules
 
 	data, err := ioutil.ReadFile(file)
@@ -128,7 +128,7 @@ func ReadConfig(file string) rules {
 	return config
 }
 
-func ReadFromPipe() string {
+func readFromPipe() string {
 	pipedQuery := ""
 
 	fi, err := os.Stdin.Stat()
@@ -153,7 +153,7 @@ func ReadFromPipe() string {
 func main() {
 	argsWithoutProg := os.Args[1:]
 	query := strings.Join(argsWithoutProg, " ")
-	pipedQuery := ReadFromPipe()
+	pipedQuery := readFromPipe()
 	usr, err := user.Current()
 
 	if err != nil {
@@ -173,14 +173,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	config := ReadConfig(configFile)
+	config := readConfig(configFile)
 
 	switch query {
 	case "-v":
 		fmt.Printf("Version %s\n", Version)
 		os.Exit(0)
 	case "--check":
-		_, err := CheckConfiguration(config)
+		_, err := checkConfiguration(config)
 
 		if err != nil {
 			fmt.Print(err)
@@ -188,12 +188,12 @@ func main() {
 			fmt.Printf("Everything ok\n")
 		}
 	default:
-		var launcher Launcher
+		var launcher standardLauncher
 
 		if pipedQuery != "" {
-			RunQuery(pipedQuery, launcher, config)
+			runQuery(pipedQuery, launcher, config)
 		} else {
-			RunQuery(query, launcher, config)
+			runQuery(query, launcher, config)
 		}
 	}
 }
